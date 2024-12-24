@@ -191,7 +191,8 @@ if __name__ == '__main__':
     gp.predict(X_test)
     gp.plot()
     plt.tight_layout()
-    plt.savefig(os.path.join(os.curdir,'fig','GP.png'),dpi=600,transparent=True)
+    plt.show()
+    # plt.savefig(os.path.join(os.curdir,'fig','GP.png'),dpi=600,transparent=True)
 
     plt.figure(figsize=(16, 8))
     for i in range(6):
@@ -203,6 +204,7 @@ if __name__ == '__main__':
         sgp.plot()
         plt.title(f'#pseudo data = {nz}')
     plt.tight_layout()
-    plt.savefig(os.path.join(os.curdir,'fig','SGP.png'),dpi=600,transparent=True)
+    plt.show()
+    # plt.savefig(os.path.join(os.curdir,'fig','SGP.png'),dpi=600,transparent=True)
 
 
