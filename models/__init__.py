@@ -1,7 +1,7 @@
 import os
 import sys
 from .MyGP import GP
-from .kernel import rbf
+from .kernels import rbf
 
 # 获取上一级目录的路径
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
