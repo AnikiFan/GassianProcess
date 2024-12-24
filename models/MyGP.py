@@ -1,10 +1,11 @@
+import pandas as pd
 import numpy as np
 from scipy.optimize import minimize
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 import os
 from kernel import *
-from utils import *
+from utils.utils import *
 import seaborn as sns
 
 
@@ -34,7 +35,15 @@ class GP:
     def fit(self, X,y=None):
         assert y is not None or self.f is not None
         self._X = X
-        self._y = y or self.f(X)
+        if y is not None:
+            self._y = y
+        else:
+            self._y = self.f(X)
+        
+        if isinstance(X, pd.DataFrame):
+            self._X = X.values
+        if isinstance(y, pd.Series):
+            self._y = y.values
 
         def marginal_likelihood(hyperparameters):
             theta = hyperparameters[:-1]
@@ -58,6 +67,7 @@ class GP:
             self._y_test = y_test
         elif self.f is not None:
             self._y_test = self.f(X_test)
+
         C_N = self.kernel(self._X, self._X, *self.theta) + self.noise * np.eye(self._X.shape[0])
         k = self.kernel(self._X, self._X_test, *self.theta)
         c = self.kernel(self._X_test, self._X_test, *self.theta) + self.nugget * np.eye(self._X_test.shape[0])
@@ -82,7 +92,6 @@ class GP:
 class SparseGP:
     def __init__(self, kernel, theta, bound,f=None, noise=1e-5, nugget=1e-10):
         """
-
         :param y: 训练集标签
         :param f: y = f(X)
         :param kernel: kernel(X,Y,*theta)，其中theta为超参数列表
@@ -93,7 +102,7 @@ class SparseGP:
         """
         self.f = f
         self.kernel = kernel
-        self.theta = theta
+        self.theta = theta  
         self.noise = noise
         self.bound = bound
         self.nugget = nugget
@@ -106,18 +115,27 @@ class SparseGP:
 
     def fit(self, X, nz,y=None):
         """
-
         :param X: 测试集
-        :param nz: pseudo data的个数
-        :param y: 测试集标签，如果之前已经提供了f则可以不提供
-        :return:
+        :param nz: pseudo data的个数 
+        :param y: 测试集标签，如果之前已经提供了f则可以不提供 
+        :return: 
         """
         assert y is not None or self.f is not None
         self._X = X
         kmeans = KMeans(n_clusters=nz)
         kmeans.fit(X)
         self._Z = kmeans.cluster_centers_
-        self._y = y or self.f(X)
+        if y is not None:
+            self._y = y
+        else:
+            self._y = self.f(X)
+        
+        if isinstance(X, pd.DataFrame):
+            self._X = X.values
+        if isinstance(y, pd.Series):
+            self._y = y.values
+
+
         def marginal_likelihood(hyperparameters):
             theta = hyperparameters[:-1]
             noise = hyperparameters[-1]

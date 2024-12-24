@@ -3,10 +3,10 @@ This is a repo for Gaussian process implementation
 
 ## Vanilla Gaussian Process
 
-![Vanilla Gaussian Process](./fig/GP.png)
+![Vanilla Gaussian Process](./figs/GP.png)
 
 ## Sparse Gaussian Process
 
-![Sparse Gaussian Process](./fig/SGP.png)
+![Sparse Gaussian Process](./figs/SGP.png)
 
 see `Introduction.pdf` for analysis

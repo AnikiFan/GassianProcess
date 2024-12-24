@@ -1,5 +1,6 @@
 *.ipynb
 .idea/
+!predict.ipynb
 
 ### venv template
 # Virtualenv
