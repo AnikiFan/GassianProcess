@@ -179,10 +179,10 @@ class SparseGP:
         L_inv = np.linalg.inv(L)
         LVD = L_inv@V@D_inv
         K_inv = D_inv - LVD.T@LVD
-        K_test = self.kernel(self._X_test, self._X_test, *self.theta)
-        k_test = self.kernel(self._X,self._X_test,*self.theta)
-        m = k_test.T @ K_inv @ self._y
-        cov = np.clip(K_test - k_test.T @ K_inv @ k_test,1e-15,np.inf)
+        Q = self.kernel(X_test,self._Z, *self.theta)@Kmm@Kmn
+        K_test = self.kernel(X_test,X_test, *self.theta)
+        m = Q @ K_inv @ self._y
+        cov = np.clip(K_test - Q @ K_inv @ Q.T,1e-15,np.inf)
         s = np.sqrt(np.diag(cov)+self.noise)
         self._m = m
         self._s = s
