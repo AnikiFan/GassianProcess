@@ -83,7 +83,10 @@ class GP:
         plt.plot(self._X_test.flatten(), self._m.flatten(), label=r'$\mu$')
         if self._y_test is not None:
             plt.plot(self._X_test.flatten(), self._y_test.flatten(), label=r'$f(x)$')
-        plt.plot(self._X.flatten(),self._y.flatten(), label='training data',linestyle='dashed')
+        if self.f is None:
+            plt.plot(self._X.flatten(),self._y.flatten(), label='training data',linestyle='dashed')
+        else:
+            plt.scatter(self._X.flatten(),self._y.flatten(), label='training data',marker='x',color='black')
         plt.fill_between(self._X_test.flatten(), self._m.flatten() - 1.96 * self._s.flatten(),
                          self._m.flatten() + 1.96 * self._s.flatten(), alpha=0.2, label=r'$\mu\pm 2\sigma$')
         plt.legend()
@@ -192,7 +195,10 @@ class SparseGP:
         plt.plot(self._X_test.flatten(), self._m.flatten(), label=r'$\mu$')
         if self._y_test is not None:
             plt.plot(self._X_test.flatten(), self._y_test.flatten(), label=r'$f(x)$')
-        plt.plot(self._X.flatten(),self._y.flatten(), label='training data',linestyle='dashed')
+        if self.f is None:
+            plt.plot(self._X.flatten(),self._y.flatten(), label='training data',linestyle='dashed')
+        else:
+            plt.scatter(self._X.flatten(),self._y.flatten(), label='training data',marker='x',color='black')
         plt.fill_between(self._X_test.flatten(), self._m.flatten() - 1.96 * self._s.flatten(),
                          self._m.flatten() + 1.96 * self._s.flatten(), alpha=0.2, label=r'$\mu\pm 2\sigma$')
         sns.rugplot(self._Z.flatten(), label='pseudo data',lw=1)

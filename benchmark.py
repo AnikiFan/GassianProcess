@@ -1,9 +1,10 @@
-from MyGP import GP,SparseGP
+from models.MyGP import GP,SparseGP
 import numpy as np
 import matplotlib.pyplot as plt
 from utils import test_1D
 import time
-from kernel import rbf
+from models.kernels import rbf
+from tqdm import tqdm
 
 NX = 1000
 X = np.random.uniform(low=-10, high=10, size=(NX, 1))
@@ -28,7 +29,7 @@ sgp_mse = []
 sgp_fit_time = []
 sgp_predict_time = []
 
-for nz in nzs:
+for nz in tqdm(nzs):
     sgp = SparseGP(f=test_1D, kernel=rbf, theta=[1, 1], bound=[[1e-5, None], [1e-5, None]])
 
     start_time = time.perf_counter()
